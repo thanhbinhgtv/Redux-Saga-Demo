@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-function App() {
+export default function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: "GET_ALL_RECRUIT" })
+  }, []);
+
+  const { dataRecruit, isLoading } = useSelector(state => state.RecruitReducer)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="conatainer">
+      {isLoading ? <h2> Data Is Loading </h2> : (
+        dataRecruit && dataRecruit.map((item, index) => {
+          return <div className="wrapper" key={index}>
+            <h1> {item?.title} </h1>
+            <p> {item?.description}</p>
+          </div>
+        })
+      )}
     </div>
   );
 }
-
-export default App;
